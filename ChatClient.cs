@@ -30,8 +30,8 @@ namespace Assignment1_Client
         // Sending
         // Receviing
         // Disconnecting
-        // 
-        //
+        // Decoding 
+        // Encoding
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
         public event EventHandler<ConnectionClosedEventArgs> ConnectionClosed;
@@ -87,7 +87,7 @@ namespace Assignment1_Client
 
                 //gets here if connection succeds and can update local class variable
                 _socket = s;
-                s.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, onConnectCallback, s);
+                s.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, onReceiveCallback, s);
             }
         }
 
@@ -119,6 +119,40 @@ namespace Assignment1_Client
 
             //Check if the socket closed
             ConnectionClosed?.Invoke(this, new ConnectionClosedEventArgs(false));
+        }
+
+
+        //This is an asyncronus callback whenever client recives something and decodes it
+        private void onReceiveCallback(IAsyncResult iasync)
+        {
+            Socket locSoc = (Socket)iasync.AsyncState;
+            try
+            {
+
+                int bytes = locSoc.EndReceive(iasync);
+
+                //True due to reading from the server should be empty if closed. Calls event to notify UI
+                if (bytes == 0) { ClosedFromServer(locSoc); return; }
+
+                //Decodes bytes
+                string text = Encoding.UTF8.GetString(_buffer, 0, bytes);
+            }
+            catch (ObjectDisposedException) { } // closed from client
+            catch (SocketException) {  ClosedFromServer(locSoc);}  //Connection Lost
+        }
+
+        private void ClosedFromServer(Socket s)
+        {
+            lock (_lockObj)
+            {
+                if (_socket != s) return; //Already handled by Disconnect or another callback
+
+                //Reset the socket
+                _socket = null;
+            }
+            //Invoke event to update UI that server disconnected
+            ConnectionClosed?.Invoke(this, new ConnectionClosedEventArgs(true)); 
+            
         }
 
     }
