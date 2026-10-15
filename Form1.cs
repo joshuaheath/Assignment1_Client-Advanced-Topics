@@ -13,6 +13,7 @@ namespace Assignment1_Client
 {
     public partial class Form1 : Form
     {
+        #region required designer handlers
         public Form1()
         {
             InitializeComponent();
@@ -26,6 +27,7 @@ namespace Assignment1_Client
         {
 
         }
+        #endregion
 
         //Class level variables (Any class can use them)
         Socket _client = null;
