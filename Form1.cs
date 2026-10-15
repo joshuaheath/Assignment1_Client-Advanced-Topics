@@ -93,6 +93,12 @@ namespace Assignment1_Client
 
                 _client.BeginReceive(asyncMsgData.buffer, 0, StateObj.buffersize, SocketFlags.None, new AsyncCallback(receiveMessage), asyncMsgData);
             }
+            //For whenever the client dissconnects it sends a ObjectDisposedExpection from "int i = handler.EndReceive(iasync);"
+            //It is called because of the pending async callback
+            catch (ObjectDisposedException) 
+            {
+                MessageBox.Show("Client Disconnected");
+            }
             catch (SocketException)
             {
                 MessageBox.Show("Server Disconnected");
@@ -155,7 +161,7 @@ namespace Assignment1_Client
             
             toClose.Close();
 
-            MessageBox.Show("Client Disconnected");
+            //MessageBox.Show("Client Disconnected");
             rtxtHistory.AppendText("Disconnected\n");
         }
     }
