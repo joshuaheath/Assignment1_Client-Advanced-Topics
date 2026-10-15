@@ -19,7 +19,6 @@ namespace Assignment1_Client
             InitializeComponent();
         }
 
-        //Gloab variables/values
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -30,24 +29,71 @@ namespace Assignment1_Client
 
         }
 
-        private void lblIP_Click(object sender, EventArgs e)
+        private void receiveMessage(IAsyncResult iasync)
+        {
+            //Recasts "iasync" as StateObj
+            StateObj asyncMsgData = (StateObj)iasync.AsyncState;
+            Socket handler = asyncMsgData.socket;
+
+            try
+            {
+                //Num of bytes recived
+                int i = handler.EndReceive(iasync);
+
+                //RecivedMsg converted into a string
+                string receivedMsgString = Encoding.ASCII.GetString(asyncMsgData.buffer, 0, i);
+                
+                // Invoking method to display recived text to txtBox history
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    this.rtxtHistory.AppendText("Server: " + receivedMsgString + "\n");
+                }));
+
+
+                _client.BeginReceive(asyncMsgData.buffer, 0, StateObj.buffersize, SocketFlags.None, new AsyncCallback(receiveMessage), asyncMsgData);
+            }
+            catch (SocketException)
+            {
+                MessageBox.Show("Server Disconnected");
+            }
+            catch (Exception _e)
+            {
+                MessageBox.Show(_e.ToString());
+            }
+        }
+
+
+        private void rtxtHistory_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void lblPort_Click(object sender, EventArgs e)
+        private void txtMessage_TextChanged(object sender, EventArgs e)
         {
 
         }
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            string sendingMessage = txtMessage.Text;
+            _client.Send(Encoding.ASCII.GetBytes(sendingMessage + "\n"));
 
-        //Constants
+            this.Invoke(new MethodInvoker(delegate ()
+            {
+                //Resets Message box for nexttime
+                this.txtMessage.Text = "";
+                this.rtxtHistory.AppendText("Client: " + sendingMessage + "\n");
+            }));
+        }
+
+        //Class level variables (Any class can use them)
         Socket _client = null;
-        string _ip = string.Empty;
+        string _ip = "127.0.0.1";
         int _port = 1200;
-        private void btnConnect_Click(object sender, EventArgs e)
+
+        private void toolStripBtnConnect_Click(object sender, EventArgs e)
         {
-            _ip = txtIP.Text;
-            int.TryParse(txtPort.Text, out _port);
+            _ip = toolStripTxtIP.Text;
+            int.TryParse(toolStripTxtPort.Text, out _port);
 
             try
             {
@@ -62,69 +108,23 @@ namespace Assignment1_Client
             }
             catch (Exception _e)
             {
-                MessageBox.Show(_e.ToString());
+                //MessageBox.Show(_e.ToString());
+                //MessageBox.Show(_e.Message);
+                MessageBox.Show("Invalid IP or Port, Try Again");
+                Console.WriteLine(_e.Message);
+                Console.WriteLine(_e.ToString());
             }
         }
 
-        private void receiveMessage(IAsyncResult iasync)
-        {
-            StateObj asyncMsgData = (StateObj)iasync.AsyncState;
-            Socket handler = asyncMsgData.socket;
-
-            try
-            {
-                int i = handler.EndReceive(iasync);
-
-                //RecivedMsg converted into a string
-                string receivedMsgString = Encoding.ASCII.GetString(asyncMsgData.buffer, 0, i);
-
-                // Invoking method to display recived text to txtBox history
-                this.Invoke(new MethodInvoker(delegate ()
-                {
-                    this.rtxtHistory.AppendText("Server: " + receivedMsgString + "\n");
-                }));
-
-                _client.BeginReceive(asyncMsgData.buffer, 0, StateObj.buffersize, SocketFlags.None, new AsyncCallback(receiveMessage), asyncMsgData);
-            }
-            catch (SocketException)
-            {
-                MessageBox.Show("Server Disconnected");
-            }
-            catch (Exception _e)
-            {
-                MessageBox.Show(_e.ToString());
-            }
-        }
-
-        private void txtIP_TextChanged(object sender, EventArgs e)
+        private void toolStripTxtIP_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void txtPort_TextChanged(object sender, EventArgs e)
+        private void toolStripBtnAutoFill_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void rtxtHistory_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtMessage_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void btnSend_Click(object sender, EventArgs e)
-        {
-            string sendingMessage = txtMessage.Text;
-            _client.Send(Encoding.ASCII.GetBytes(sendingMessage));
-
-            this.Invoke(new MethodInvoker(delegate ()
-            {
-                this.txtMessage.Text = "";
-                this.rtxtHistory.AppendText("Client: " + sendingMessage + "\n");
-            }));
+            toolStripTxtIP.Text = "127.0.0.1";
+            toolStripTxtPort.Text = "13000";
         }
     }
 

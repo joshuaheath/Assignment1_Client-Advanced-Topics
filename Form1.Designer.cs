@@ -28,53 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblIP = new System.Windows.Forms.Label();
-            this.lblPort = new System.Windows.Forms.Label();
-            this.txtIP = new System.Windows.Forms.TextBox();
-            this.txtPort = new System.Windows.Forms.TextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.lblMessage = new System.Windows.Forms.Label();
             this.rtxtHistory = new System.Windows.Forms.RichTextBox();
             this.lblHistory = new System.Windows.Forms.Label();
             this.btnSend = new System.Windows.Forms.Button();
-            this.btnConnect = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.iPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTxtIP = new System.Windows.Forms.ToolStripTextBox();
+            this.portToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTxtPort = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripBtnAutoFill = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripBtnConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lblIP
-            // 
-            this.lblIP.AutoSize = true;
-            this.lblIP.Location = new System.Drawing.Point(13, 341);
-            this.lblIP.Name = "lblIP";
-            this.lblIP.Size = new System.Drawing.Size(24, 20);
-            this.lblIP.TabIndex = 0;
-            this.lblIP.Text = "IP";
-            this.lblIP.Click += new System.EventHandler(this.lblIP_Click);
-            // 
-            // lblPort
-            // 
-            this.lblPort.AutoSize = true;
-            this.lblPort.Location = new System.Drawing.Point(291, 341);
-            this.lblPort.Name = "lblPort";
-            this.lblPort.Size = new System.Drawing.Size(52, 20);
-            this.lblPort.TabIndex = 1;
-            this.lblPort.Text = "PORT";
-            this.lblPort.Click += new System.EventHandler(this.lblPort_Click);
-            // 
-            // txtIP
-            // 
-            this.txtIP.Location = new System.Drawing.Point(17, 365);
-            this.txtIP.Name = "txtIP";
-            this.txtIP.Size = new System.Drawing.Size(239, 26);
-            this.txtIP.TabIndex = 2;
-            this.txtIP.TextChanged += new System.EventHandler(this.txtIP_TextChanged);
-            // 
-            // txtPort
-            // 
-            this.txtPort.Location = new System.Drawing.Point(295, 364);
-            this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(215, 26);
-            this.txtPort.TabIndex = 3;
-            this.txtPort.TextChanged += new System.EventHandler(this.txtPort_TextChanged);
             // 
             // txtMessage
             // 
@@ -121,15 +89,81 @@
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
-            // btnConnect
+            // menuStrip1
             // 
-            this.btnConnect.Location = new System.Drawing.Point(530, 364);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(119, 36);
-            this.btnConnect.TabIndex = 9;
-            this.btnConnect.Text = "CONNECT";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(973, 33);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.iPToolStripMenuItem,
+            this.portToolStripMenuItem,
+            this.toolStripBtnAutoFill,
+            this.toolStripBtnConnect});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(182, 29);
+            this.toolStripMenuItem1.Text = "Network";
+            // 
+            // iPToolStripMenuItem
+            // 
+            this.iPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTxtIP});
+            this.iPToolStripMenuItem.Name = "iPToolStripMenuItem";
+            this.iPToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.iPToolStripMenuItem.Text = "IP";
+            // 
+            // toolStripTxtIP
+            // 
+            this.toolStripTxtIP.AcceptsReturn = true;
+            this.toolStripTxtIP.AccessibleDescription = "";
+            this.toolStripTxtIP.AccessibleName = "";
+            this.toolStripTxtIP.BackColor = System.Drawing.SystemColors.Window;
+            this.toolStripTxtIP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.toolStripTxtIP.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolStripTxtIP.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.toolStripTxtIP.Name = "toolStripTxtIP";
+            this.toolStripTxtIP.Size = new System.Drawing.Size(100, 24);
+            this.toolStripTxtIP.Text = "Replace Me";
+            this.toolStripTxtIP.Click += new System.EventHandler(this.toolStripTxtIP_Click);
+            // 
+            // portToolStripMenuItem
+            // 
+            this.portToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTxtPort});
+            this.portToolStripMenuItem.Name = "portToolStripMenuItem";
+            this.portToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.portToolStripMenuItem.Text = "Port";
+            // 
+            // toolStripTxtPort
+            // 
+            this.toolStripTxtPort.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolStripTxtPort.Name = "toolStripTxtPort";
+            this.toolStripTxtPort.Size = new System.Drawing.Size(100, 31);
+            this.toolStripTxtPort.Text = "Replace Me";
+            // 
+            // toolStripBtnAutoFill
+            // 
+            this.toolStripBtnAutoFill.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.toolStripBtnAutoFill.ForeColor = System.Drawing.Color.Red;
+            this.toolStripBtnAutoFill.Name = "toolStripBtnAutoFill";
+            this.toolStripBtnAutoFill.Size = new System.Drawing.Size(270, 34);
+            this.toolStripBtnAutoFill.Text = "Fill Ip and Port";
+            this.toolStripBtnAutoFill.Click += new System.EventHandler(this.toolStripBtnAutoFill_Click);
+            // 
+            // toolStripBtnConnect
+            // 
+            this.toolStripBtnConnect.Name = "toolStripBtnConnect";
+            this.toolStripBtnConnect.Size = new System.Drawing.Size(270, 34);
+            this.toolStripBtnConnect.Text = "CONNECT";
+            this.toolStripBtnConnect.Click += new System.EventHandler(this.toolStripBtnConnect_Click);
             // 
             // Form1
             // 
@@ -137,36 +171,37 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(973, 882);
-            this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.lblHistory);
             this.Controls.Add(this.rtxtHistory);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.txtMessage);
-            this.Controls.Add(this.txtPort);
-            this.Controls.Add(this.txtIP);
-            this.Controls.Add(this.lblPort);
-            this.Controls.Add(this.lblIP);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Assignment 1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblIP;
-        private System.Windows.Forms.Label lblPort;
-        private System.Windows.Forms.TextBox txtIP;
-        private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.RichTextBox rtxtHistory;
         private System.Windows.Forms.Label lblHistory;
         private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem iPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolStripTxtIP;
+        private System.Windows.Forms.ToolStripMenuItem portToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolStripTxtPort;
+        private System.Windows.Forms.ToolStripMenuItem toolStripBtnConnect;
+        private System.Windows.Forms.ToolStripMenuItem toolStripBtnAutoFill;
     }
 }
 
