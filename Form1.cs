@@ -133,7 +133,30 @@ namespace Assignment1_Client
 
         private void toolStripBtnDisconnect_Click(object sender, EventArgs e)
         {
+            if (_client == null || !_client.Connected)
+            {
+                MessageBox.Show("Not connected");
+                return;
+            }
 
+            Socket toClose = _client;
+            _client = null; // set first so the receive callback knows this was intentional
+
+            try
+            {
+                // Sends a mesage to the server saying client is disconnecting
+                toClose.Shutdown(SocketShutdown.Both); 
+            }
+            catch (SocketException) 
+            {
+                MessageBox.Show("SocketException on shutdown");
+            } // already dead, ignore
+
+            
+            toClose.Close();
+
+            MessageBox.Show("Client Disconnected");
+            rtxtHistory.AppendText("Disconnected\n");
         }
     }
 
