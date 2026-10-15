@@ -165,6 +165,7 @@ namespace Assignment1_Client
 
             //MessageBox.Show("Client Disconnected");
             rtxtHistory.AppendText("Disconnected\n");
+
         }
     }
 
