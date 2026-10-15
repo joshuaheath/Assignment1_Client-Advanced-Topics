@@ -41,7 +41,10 @@
             this.toolStripTxtPort = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripBtnAutoFill = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripBtnConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtMessage
@@ -162,12 +165,33 @@
             this.toolStripBtnConnect.Text = "CONNECT";
             this.toolStripBtnConnect.Click += new System.EventHandler(this.toolStripBtnConnect_Click);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Location = new System.Drawing.Point(21, 36);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(918, 385);
+            this.panel1.TabIndex = 11;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.InfoText;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.SystemColors.Window;
+            this.textBox1.Location = new System.Drawing.Point(180, 153);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(560, 75);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = "GAME GOES HERE";
+            // 
             // Form1
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Text;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(973, 882);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.lblHistory);
             this.Controls.Add(this.rtxtHistory);
@@ -180,6 +204,8 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -199,6 +225,8 @@
         private System.Windows.Forms.ToolStripTextBox toolStripTxtPort;
         private System.Windows.Forms.ToolStripMenuItem toolStripBtnConnect;
         private System.Windows.Forms.ToolStripMenuItem toolStripBtnAutoFill;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
