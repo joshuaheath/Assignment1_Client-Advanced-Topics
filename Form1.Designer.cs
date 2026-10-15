@@ -43,6 +43,9 @@
             this.toolStripBtnConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.toolStripBtnDisconnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.idkWhatGoesHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -95,7 +98,8 @@
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.gameToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(973, 33);
@@ -108,7 +112,8 @@
             this.iPToolStripMenuItem,
             this.portToolStripMenuItem,
             this.toolStripBtnAutoFill,
-            this.toolStripBtnConnect});
+            this.toolStripBtnConnect,
+            this.toolStripBtnDisconnect});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(95, 29);
             this.toolStripMenuItem1.Text = "Network";
@@ -118,7 +123,7 @@
             this.iPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTxtIP});
             this.iPToolStripMenuItem.Name = "iPToolStripMenuItem";
-            this.iPToolStripMenuItem.Size = new System.Drawing.Size(230, 34);
+            this.iPToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.iPToolStripMenuItem.Text = "IP";
             // 
             // toolStripTxtIP
@@ -139,7 +144,7 @@
             this.portToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTxtPort});
             this.portToolStripMenuItem.Name = "portToolStripMenuItem";
-            this.portToolStripMenuItem.Size = new System.Drawing.Size(230, 34);
+            this.portToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.portToolStripMenuItem.Text = "Port";
             // 
             // toolStripTxtPort
@@ -154,14 +159,14 @@
             this.toolStripBtnAutoFill.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
             this.toolStripBtnAutoFill.ForeColor = System.Drawing.Color.Red;
             this.toolStripBtnAutoFill.Name = "toolStripBtnAutoFill";
-            this.toolStripBtnAutoFill.Size = new System.Drawing.Size(230, 34);
+            this.toolStripBtnAutoFill.Size = new System.Drawing.Size(270, 34);
             this.toolStripBtnAutoFill.Text = "Fill Ip and Port";
             this.toolStripBtnAutoFill.Click += new System.EventHandler(this.toolStripBtnAutoFill_Click);
             // 
             // toolStripBtnConnect
             // 
             this.toolStripBtnConnect.Name = "toolStripBtnConnect";
-            this.toolStripBtnConnect.Size = new System.Drawing.Size(230, 34);
+            this.toolStripBtnConnect.Size = new System.Drawing.Size(270, 34);
             this.toolStripBtnConnect.Text = "CONNECT";
             this.toolStripBtnConnect.Click += new System.EventHandler(this.toolStripBtnConnect_Click);
             // 
@@ -184,6 +189,27 @@
             this.textBox1.Size = new System.Drawing.Size(560, 75);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "GAME GOES HERE";
+            // 
+            // toolStripBtnDisconnect
+            // 
+            this.toolStripBtnDisconnect.Name = "toolStripBtnDisconnect";
+            this.toolStripBtnDisconnect.Size = new System.Drawing.Size(270, 34);
+            this.toolStripBtnDisconnect.Text = "DISCONNECT";
+            this.toolStripBtnDisconnect.Click += new System.EventHandler(this.toolStripBtnDisconnect_Click);
+            // 
+            // gameToolStripMenuItem
+            // 
+            this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.idkWhatGoesHereToolStripMenuItem});
+            this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
+            this.gameToolStripMenuItem.Size = new System.Drawing.Size(74, 29);
+            this.gameToolStripMenuItem.Text = "Game";
+            // 
+            // idkWhatGoesHereToolStripMenuItem
+            // 
+            this.idkWhatGoesHereToolStripMenuItem.Name = "idkWhatGoesHereToolStripMenuItem";
+            this.idkWhatGoesHereToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.idkWhatGoesHereToolStripMenuItem.Text = "Idk what goes here";
             // 
             // Form1
             // 
@@ -227,6 +253,9 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripBtnAutoFill;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripBtnDisconnect;
+        private System.Windows.Forms.ToolStripMenuItem gameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem idkWhatGoesHereToolStripMenuItem;
     }
 }
 

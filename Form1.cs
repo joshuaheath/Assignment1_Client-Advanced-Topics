@@ -131,7 +131,10 @@ namespace Assignment1_Client
             toolStripTxtPort.Text = "13000";
         }
 
+        private void toolStripBtnDisconnect_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 
     public class StateObj
