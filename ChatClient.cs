@@ -24,6 +24,14 @@ namespace Assignment1_Client
 
     public class ChatClient
     {
+
+        //What are the operations that need to happen to chat with a server
+        // Connecting
+        // Sending
+        // Receviing
+        // Disconnecting
+        // 
+        //
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
         public event EventHandler<ConnectionClosedEventArgs> ConnectionClosed;
@@ -89,7 +97,7 @@ namespace Assignment1_Client
             Socket locSoc;
 
             lock (_lockObj) { locSoc = _socket; } // After this we can now use the locSoc to communicate with the server
-            if (_socket != null) { throw new InvalidOperationException("Not Connected"); }
+            if (_socket == null) { throw new InvalidOperationException("Not Connected"); }
 
             //Convertes message into data that can be sent through the socket
             byte[] data = Encoding.UTF8.GetBytes(message + "\n");
@@ -97,6 +105,21 @@ namespace Assignment1_Client
             locSoc.BeginSend(data, 0, data.Length, SocketFlags.None, OnSentCallback, s);
         }
 
+
+        public void Disconnect()
+        {
+            Socket locSoc;
+
+            lock (_lockObj) { locSoc = _socket; } // After this we can now use the locSoc to communicate with the server
+            if (_socket == null) { throw new InvalidOperationException("Not Connected"); }
+
+            try { locSoc.Shutdown(SocketShutdown.Both); } 
+            catch (SocketException) { }
+            locSoc.Close();
+
+            //Check if the socket closed
+            ConnectionClosed?.Invoke(this, new ConnectionClosedEventArgs(false));
+        }
 
     }
 }
