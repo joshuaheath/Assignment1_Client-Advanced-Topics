@@ -24,11 +24,36 @@ namespace Assignment1_Client
 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        //Class level variables (Any class can use them)
+        Socket _client = null;
+        string _ip = "127.0.0.1";
+        int _port = 1200;
+
+        private void toolStripBtnConnect_Click(object sender, EventArgs e)
         {
+            _ip = toolStripTxtIP.Text;
+            int.TryParse(toolStripTxtPort.Text, out _port);
 
+            try
+            {
+                _client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _client.Connect(_ip, _port);
+
+                MessageBox.Show("Connected");
+
+                StateObj _state = new StateObj();
+                _state.socket = _client;
+                _client.BeginReceive(_state.buffer, 0, StateObj.buffersize, SocketFlags.None, new AsyncCallback(receiveMessage), _state);
+            }
+            catch (Exception _e)
+            {
+                //MessageBox.Show(_e.ToString());
+                //MessageBox.Show(_e.Message);
+                MessageBox.Show("Invalid IP or Port, Try Again");
+                Console.WriteLine(_e.Message);
+                Console.WriteLine(_e.ToString());
+            }
         }
-
         private void receiveMessage(IAsyncResult iasync)
         {
             //Recasts "iasync" as StateObj
@@ -62,6 +87,22 @@ namespace Assignment1_Client
             }
         }
 
+        private void toolStripTxtIP_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripBtnAutoFill_Click(object sender, EventArgs e)
+        {
+            toolStripTxtIP.Text = "127.0.0.1";
+            toolStripTxtPort.Text = "13000";
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
 
         private void rtxtHistory_TextChanged(object sender, EventArgs e)
         {
@@ -85,47 +126,6 @@ namespace Assignment1_Client
             }));
         }
 
-        //Class level variables (Any class can use them)
-        Socket _client = null;
-        string _ip = "127.0.0.1";
-        int _port = 1200;
-
-        private void toolStripBtnConnect_Click(object sender, EventArgs e)
-        {
-            _ip = toolStripTxtIP.Text;
-            int.TryParse(toolStripTxtPort.Text, out _port);
-
-            try
-            {
-                _client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                _client.Connect(_ip, _port);
-
-                MessageBox.Show("Connected");
-
-                StateObj _state = new StateObj();
-                _state.socket = _client;
-                _client.BeginReceive(_state.buffer, 0, StateObj.buffersize, SocketFlags.None, new AsyncCallback(receiveMessage), _state);
-            }
-            catch (Exception _e)
-            {
-                //MessageBox.Show(_e.ToString());
-                //MessageBox.Show(_e.Message);
-                MessageBox.Show("Invalid IP or Port, Try Again");
-                Console.WriteLine(_e.Message);
-                Console.WriteLine(_e.ToString());
-            }
-        }
-
-        private void toolStripTxtIP_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStripBtnAutoFill_Click(object sender, EventArgs e)
-        {
-            toolStripTxtIP.Text = "127.0.0.1";
-            toolStripTxtPort.Text = "13000";
-        }
     }
 
     public class StateObj
