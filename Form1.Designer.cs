@@ -50,7 +50,6 @@
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(790, 26);
             this.txtMessage.TabIndex = 4;
-            this.txtMessage.TextChanged += new System.EventHandler(this.txtMessage_TextChanged);
             // 
             // lblMessage
             // 
@@ -68,7 +67,6 @@
             this.rtxtHistory.Size = new System.Drawing.Size(944, 338);
             this.rtxtHistory.TabIndex = 6;
             this.rtxtHistory.Text = "";
-            this.rtxtHistory.TextChanged += new System.EventHandler(this.rtxtHistory_TextChanged);
             // 
             // lblHistory
             // 
@@ -109,7 +107,7 @@
             this.toolStripBtnAutoFill,
             this.toolStripBtnConnect});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(182, 29);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(95, 29);
             this.toolStripMenuItem1.Text = "Network";
             // 
             // iPToolStripMenuItem
@@ -117,7 +115,7 @@
             this.iPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTxtIP});
             this.iPToolStripMenuItem.Name = "iPToolStripMenuItem";
-            this.iPToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.iPToolStripMenuItem.Size = new System.Drawing.Size(230, 34);
             this.iPToolStripMenuItem.Text = "IP";
             // 
             // toolStripTxtIP
@@ -132,14 +130,13 @@
             this.toolStripTxtIP.Name = "toolStripTxtIP";
             this.toolStripTxtIP.Size = new System.Drawing.Size(100, 24);
             this.toolStripTxtIP.Text = "Replace Me";
-            this.toolStripTxtIP.Click += new System.EventHandler(this.toolStripTxtIP_Click);
             // 
             // portToolStripMenuItem
             // 
             this.portToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTxtPort});
             this.portToolStripMenuItem.Name = "portToolStripMenuItem";
-            this.portToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.portToolStripMenuItem.Size = new System.Drawing.Size(230, 34);
             this.portToolStripMenuItem.Text = "Port";
             // 
             // toolStripTxtPort
@@ -154,14 +151,14 @@
             this.toolStripBtnAutoFill.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
             this.toolStripBtnAutoFill.ForeColor = System.Drawing.Color.Red;
             this.toolStripBtnAutoFill.Name = "toolStripBtnAutoFill";
-            this.toolStripBtnAutoFill.Size = new System.Drawing.Size(270, 34);
+            this.toolStripBtnAutoFill.Size = new System.Drawing.Size(230, 34);
             this.toolStripBtnAutoFill.Text = "Fill Ip and Port";
             this.toolStripBtnAutoFill.Click += new System.EventHandler(this.toolStripBtnAutoFill_Click);
             // 
             // toolStripBtnConnect
             // 
             this.toolStripBtnConnect.Name = "toolStripBtnConnect";
-            this.toolStripBtnConnect.Size = new System.Drawing.Size(270, 34);
+            this.toolStripBtnConnect.Size = new System.Drawing.Size(230, 34);
             this.toolStripBtnConnect.Text = "CONNECT";
             this.toolStripBtnConnect.Click += new System.EventHandler(this.toolStripBtnConnect_Click);
             // 

@@ -8,7 +8,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.AxHost;
 
 namespace Assignment1_Client
 {
@@ -23,14 +22,19 @@ namespace Assignment1_Client
         {
 
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
 
         //Class level variables (Any class can use them)
         Socket _client = null;
         string _ip = "127.0.0.1";
-        int _port = 1200;
+        int _port = 0;
 
         private void toolStripBtnConnect_Click(object sender, EventArgs e)
         {
+
             _ip = toolStripTxtIP.Text;
             int.TryParse(toolStripTxtPort.Text, out _port);
 
@@ -65,10 +69,22 @@ namespace Assignment1_Client
                 //Num of bytes recived
                 int i = handler.EndReceive(iasync);
 
+                if (i == 0)
+                {
+                    // Server closed the connection
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
+                        rtxtHistory.AppendText("Server disconnected\n");
+                    }));
+                    handler.Close();
+                    return; // stop the receive loop
+                }
+
                 //RecivedMsg converted into a string
                 string receivedMsgString = Encoding.ASCII.GetString(asyncMsgData.buffer, 0, i);
                 
                 // Invoking method to display recived text to txtBox history
+                // Invoke is needed because it runs on a background thread
                 this.Invoke(new MethodInvoker(delegate ()
                 {
                     this.rtxtHistory.AppendText("Server: " + receivedMsgString + "\n");
@@ -87,34 +103,15 @@ namespace Assignment1_Client
             }
         }
 
-        private void toolStripTxtIP_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStripBtnAutoFill_Click(object sender, EventArgs e)
-        {
-            toolStripTxtIP.Text = "127.0.0.1";
-            toolStripTxtPort.Text = "13000";
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-        private void rtxtHistory_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtMessage_TextChanged(object sender, EventArgs e)
-        {
-
-        }
         private void btnSend_Click(object sender, EventArgs e)
         {
+            //Makes sure you are connected befoer sending messages
+            if (_client == null || !_client.Connected)
+            {
+                MessageBox.Show("Not connected to a server");
+                return;
+            }
+
             string sendingMessage = txtMessage.Text;
             _client.Send(Encoding.ASCII.GetBytes(sendingMessage + "\n"));
 
@@ -125,6 +122,15 @@ namespace Assignment1_Client
                 this.rtxtHistory.AppendText("Client: " + sendingMessage + "\n");
             }));
         }
+
+
+        //Makes dugging easier
+        private void toolStripBtnAutoFill_Click(object sender, EventArgs e)
+        {
+            toolStripTxtIP.Text = "127.0.0.1";
+            toolStripTxtPort.Text = "13000";
+        }
+
 
     }
 
