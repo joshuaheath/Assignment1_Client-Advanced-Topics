@@ -30,7 +30,7 @@ namespace Assignment1_Client
         // MessageReceived?.Invoke(this, args)
         // ConnectionClosed?.Invoke(this, args)
 
-        private Socket _client;
+        private Socket _socket;
         private readonly byte[] _buffer = new byte[1024];
 
         private readonly object _lockObj = new object();
@@ -39,12 +39,12 @@ namespace Assignment1_Client
         public bool isConnected
         {
 
-            //being inside of a lock means 
+            //being inside of a lock means that only one thread can access it at a time
             get
             {
                 lock (_lockObj)
                 {
-                    if (_client != null && _client.Connected)
+                    if (_socket != null && _socket.Connected)
                     { return true; }
                     else
                     {
@@ -56,6 +56,32 @@ namespace Assignment1_Client
         public void Connect(string ip, int port)
         {
 
+            lock (_lockObj) 
+            {
+                //Make sure were already not connected
+                if (_socket != null)
+                {
+                    throw new InvalidOperationException("Already Connected");
+                }
+
+                //Create socket to connect to 
+                Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                try
+                {
+                    s.Connect(ip, port);
+                }
+                catch
+                {
+                    s.Close(); // Makes sure the socket doesnt leak if the connection someohow fails
+                    throw;
+                }
+
+                //gets here if connection succeds and can update local class variable
+                _socket = s;
+                s.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, callback, s);
+            }
         }
+
+
     }
 }
