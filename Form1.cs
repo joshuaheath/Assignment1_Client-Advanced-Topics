@@ -56,7 +56,7 @@ namespace Assignment1_Client
 
         private void Chat_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            AppendHistory("Server: " + e.Message + "\n");
+            AppendHistory("Server: " + e.Message.TrimEnd('\r', '\n') + "\n");
         }
 
         private void Chat_ConnectionClosed(object sender, ConnectionClosedEventArgs e)

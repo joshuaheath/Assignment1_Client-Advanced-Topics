@@ -41,17 +41,18 @@
             this.toolStripTxtPort = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripBtnAutoFill = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripBtnConnect = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.toolStripBtnDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.idkWhatGoesHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtMessage
             // 
+            this.txtMessage.AcceptsReturn = true;
             this.txtMessage.Location = new System.Drawing.Point(17, 458);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(790, 26);
@@ -123,7 +124,7 @@
             this.iPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTxtIP});
             this.iPToolStripMenuItem.Name = "iPToolStripMenuItem";
-            this.iPToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.iPToolStripMenuItem.Size = new System.Drawing.Size(230, 34);
             this.iPToolStripMenuItem.Text = "IP";
             // 
             // toolStripTxtIP
@@ -144,7 +145,7 @@
             this.portToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTxtPort});
             this.portToolStripMenuItem.Name = "portToolStripMenuItem";
-            this.portToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.portToolStripMenuItem.Size = new System.Drawing.Size(230, 34);
             this.portToolStripMenuItem.Text = "Port";
             // 
             // toolStripTxtPort
@@ -159,16 +160,37 @@
             this.toolStripBtnAutoFill.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
             this.toolStripBtnAutoFill.ForeColor = System.Drawing.Color.Red;
             this.toolStripBtnAutoFill.Name = "toolStripBtnAutoFill";
-            this.toolStripBtnAutoFill.Size = new System.Drawing.Size(270, 34);
+            this.toolStripBtnAutoFill.Size = new System.Drawing.Size(230, 34);
             this.toolStripBtnAutoFill.Text = "Fill Ip and Port";
             this.toolStripBtnAutoFill.Click += new System.EventHandler(this.toolStripBtnAutoFill_Click);
             // 
             // toolStripBtnConnect
             // 
             this.toolStripBtnConnect.Name = "toolStripBtnConnect";
-            this.toolStripBtnConnect.Size = new System.Drawing.Size(270, 34);
+            this.toolStripBtnConnect.Size = new System.Drawing.Size(230, 34);
             this.toolStripBtnConnect.Text = "CONNECT";
             this.toolStripBtnConnect.Click += new System.EventHandler(this.toolStripBtnConnect_Click);
+            // 
+            // toolStripBtnDisconnect
+            // 
+            this.toolStripBtnDisconnect.Name = "toolStripBtnDisconnect";
+            this.toolStripBtnDisconnect.Size = new System.Drawing.Size(230, 34);
+            this.toolStripBtnDisconnect.Text = "DISCONNECT";
+            this.toolStripBtnDisconnect.Click += new System.EventHandler(this.toolStripBtnDisconnect_Click);
+            // 
+            // gameToolStripMenuItem
+            // 
+            this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.idkWhatGoesHereToolStripMenuItem});
+            this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
+            this.gameToolStripMenuItem.Size = new System.Drawing.Size(74, 29);
+            this.gameToolStripMenuItem.Text = "Game";
+            // 
+            // idkWhatGoesHereToolStripMenuItem
+            // 
+            this.idkWhatGoesHereToolStripMenuItem.Name = "idkWhatGoesHereToolStripMenuItem";
+            this.idkWhatGoesHereToolStripMenuItem.Size = new System.Drawing.Size(265, 34);
+            this.idkWhatGoesHereToolStripMenuItem.Text = "Idk what goes here";
             // 
             // panel1
             // 
@@ -190,29 +212,9 @@
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "GAME GOES HERE";
             // 
-            // toolStripBtnDisconnect
-            // 
-            this.toolStripBtnDisconnect.Name = "toolStripBtnDisconnect";
-            this.toolStripBtnDisconnect.Size = new System.Drawing.Size(270, 34);
-            this.toolStripBtnDisconnect.Text = "DISCONNECT";
-            this.toolStripBtnDisconnect.Click += new System.EventHandler(this.toolStripBtnDisconnect_Click);
-            // 
-            // gameToolStripMenuItem
-            // 
-            this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.idkWhatGoesHereToolStripMenuItem});
-            this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
-            this.gameToolStripMenuItem.Size = new System.Drawing.Size(74, 29);
-            this.gameToolStripMenuItem.Text = "Game";
-            // 
-            // idkWhatGoesHereToolStripMenuItem
-            // 
-            this.idkWhatGoesHereToolStripMenuItem.Name = "idkWhatGoesHereToolStripMenuItem";
-            this.idkWhatGoesHereToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.idkWhatGoesHereToolStripMenuItem.Text = "Idk what goes here";
-            // 
             // Form1
             // 
+            this.AcceptButton = this.btnSend;
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Text;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
