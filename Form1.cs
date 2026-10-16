@@ -8,12 +8,13 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ChatClientLib;
 
 namespace Assignment1_Client
 {
     public partial class Form1 : Form
     {
-        #region UNUSED BUT REQUIRED
+        #region
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -23,23 +24,20 @@ namespace Assignment1_Client
 
         }
         #endregion
-        //create object to access chat capeabilites
         private readonly ChatClient _chatClient = new ChatClient();
         public Form1()
         {
             InitializeComponent();
-            _chatClient.MessageReceived += Chat_MessageReceived;
-            _chatClient.ConnectionClosed += Chat_ConnectionClosed;
+           _chatClient.MessageReceived += Chat_MessageReceived;
+           _chatClient.ConnectionClosed += Chat_ConnectionClosed;
             FormClosing += (s, e) => _chatClient.Disconnect();
         }
 
-        //Create function to manage writing to history on a background thread
         private void AppendHistory(string message)
         {
             if (IsDisposed) { return; }
 
 
-            //Checks if whatever thread is calling needs to use an invoke or not depnding on it thread
             if (InvokeRequired)
             {
                 try { BeginInvoke(new Action(() => AppendHistory(message))); }
@@ -49,7 +47,6 @@ namespace Assignment1_Client
             else
             {
                 rtxtHistory.AppendText(message);
-                //Scrolls to appened txt
                 rtxtHistory.ScrollToCaret();
             }
         }
@@ -67,7 +64,6 @@ namespace Assignment1_Client
         }
         private void toolStripBtnConnect_Click(object sender, EventArgs e)
         {
-            //Check if connect port is valid
             if(!int.TryParse(toolStripTxtPort.Text, out int port))
             {
                 MessageBox.Show("ERROR: Port must be a number");
@@ -101,7 +97,6 @@ namespace Assignment1_Client
                 _chatClient.Send(messsage);
                 AppendHistory("Client: " + messsage + "\n");
 
-                //Clears all text from text box
                 txtMessage.Clear();
                 txtMessage.Focus();
             }
@@ -122,7 +117,6 @@ namespace Assignment1_Client
         }
 
 
-        //Makes dugging easier
         private void toolStripBtnAutoFill_Click(object sender, EventArgs e)
         {
             toolStripTxtIP.Text = "127.0.0.1";

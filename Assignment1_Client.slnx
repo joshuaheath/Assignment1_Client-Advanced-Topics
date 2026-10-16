@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../ChatClientLib/ChatClientLib.csproj" Id="97c2f41e-6e6e-4340-ac65-10dc33578897" />
   <Project Path="Assignment1_Client.csproj" />
 </Solution>

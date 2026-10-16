@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Assignment1_Client.Properties
+namespace ChatClientLib.Properties
 {
 
 

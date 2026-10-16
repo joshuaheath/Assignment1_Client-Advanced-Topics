@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Diagnostics.Eventing.Reader;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Assignment1_Client
 {
 
     public class MessageReceivedEventArgs : EventArgs
     {
-        //Property
         public string Message { get; }
 
-        //Constructor
         public MessageReceivedEventArgs(string message) { Message = message; }
     }
     public class ConnectionClosedEventArgs : EventArgs
@@ -74,20 +69,20 @@ namespace Assignment1_Client
                 }
 
                 //Create socket to connect to 
-                Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                Socket locSoc = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 try
                 {
-                    s.Connect(ip, port);
+                    locSoc.Connect(ip, port);
                 }
                 catch
                 {
-                    s.Close(); // Makes sure the socket doesnt leak if the connection someohow fails
+                    locSoc.Close(); // Makes sure the socket doesnt leak if the connection someohow fails
                     throw;
                 }
 
                 //gets here if connection succeds and can update local class variable
-                _socket = s;
-                s.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, On_Receive_Callback, s);
+                _socket = locSoc;
+                locSoc.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, On_Receive_Callback, locSoc);
             }
         }
 
@@ -138,10 +133,11 @@ namespace Assignment1_Client
                 //completes the operation started by "BeginReceive" and converts how many bytes were recivied
                 int bytes = locSoc.EndReceive(iasync);
 
-                lock(_lockObj) { if (_socket != locSoc) return; } //Catches if _socket changed while decoding so stop processing
+                // We disconnected
+                lock(_lockObj) { if (_socket != locSoc) return; } 
                 
                 //True due if server closed the connection. Calls event to notify UI
-                if (bytes == 0) { Event_Server_Disconnected(locSoc); return; }
+                if (bytes == 0) { Server_Disconnected(locSoc); return; }
 
                 //Decodes bytes from socket
                 string text = Encoding.UTF8.GetString(_buffer, 0, bytes);
@@ -151,7 +147,7 @@ namespace Assignment1_Client
                 locSoc.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, On_Receive_Callback, locSoc);
             }
             catch (ObjectDisposedException) { } // closed from client
-            catch (SocketException) { Event_Server_Disconnected(locSoc);}  //Connection Lost
+            catch (SocketException) { Server_Disconnected(locSoc);}  //Connection Lost
         }
 
         // Safely closes async sending
@@ -161,12 +157,12 @@ namespace Assignment1_Client
             try { s.EndSend(iasync); }
             catch (Exception) 
             { 
-                Event_Server_Disconnected(s); 
+                Server_Disconnected(s); 
                 s.Close();
             }
         }
 
-        private void Event_Server_Disconnected(Socket s)
+        private void Server_Disconnected(Socket s)
         {
             lock (_lockObj)
             {
