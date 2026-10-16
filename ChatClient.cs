@@ -45,7 +45,7 @@ namespace Assignment1_Client
         private readonly object _lockObj = new object();
 
         // Check if connected to the server
-        public bool isConnected
+        public bool IsConnected
         {
 
             //being inside of a lock means that only one thread can access it at a time
@@ -96,14 +96,16 @@ namespace Assignment1_Client
         {
             Socket locSoc;
 
-            lock (_lockObj) { locSoc = _socket; } // After this we can now use the locSoc to communicate with the server
-            if (_socket == null) { throw new InvalidOperationException("Not Connected"); }
-
+            lock (_lockObj)
+            {
+                locSoc = _socket;  // After this we can now use the locSoc to communicate with the server
+                if (_socket == null) { throw new InvalidOperationException("Not Connected"); }
+            }
             //Convertes message into data that can be sent through the socket
             byte[] data = Encoding.UTF8.GetBytes(message + "\n");
 
             //Starts sending the data asynchronusly, callback completes send operation safely
-            locSoc.BeginSend(data, 0, data.Length, SocketFlags.None, On_Sent_Callback, s);
+            locSoc.BeginSend(data, 0, data.Length, SocketFlags.None, On_Sent_Callback, locSoc);
         }
 
 
@@ -111,14 +113,18 @@ namespace Assignment1_Client
         {
             Socket locSoc;
 
-            lock (_lockObj) { locSoc = _socket; } // After this we can now use the locSoc to communicate with the server
-            if (_socket == null) { throw new InvalidOperationException("Not Connected"); }
+            lock (_lockObj)
+            {
+                locSoc = _socket;  // After this we can now use the locSoc to communicate with the server
+                if (_socket == null && locSoc == null) { return; }
 
-            try { locSoc.Shutdown(SocketShutdown.Both); } 
-            catch (SocketException) { }
-            locSoc.Close();
+                try { locSoc.Shutdown(SocketShutdown.Both); } 
+                catch (SocketException) { }
+                locSoc.Close();
+                //Clears socket
+                _socket = null;
+            }
 
-            //Check if the socket closed
             ConnectionClosed?.Invoke(this, new ConnectionClosedEventArgs(false));
         }
 
@@ -132,6 +138,8 @@ namespace Assignment1_Client
                 //completes the operation started by "BeginReceive" and converts how many bytes were recivied
                 int bytes = locSoc.EndReceive(iasync);
 
+                lock(_lockObj) { if (_socket != locSoc) return; } //Catches if _socket changed while decoding so stop processing
+                
                 //True due if server closed the connection. Calls event to notify UI
                 if (bytes == 0) { Event_Server_Disconnected(locSoc); return; }
 
@@ -139,9 +147,7 @@ namespace Assignment1_Client
                 string text = Encoding.UTF8.GetString(_buffer, 0, bytes);
                 MessageReceived?.Invoke(this, new MessageReceivedEventArgs(text));
 
-                lock(_lockObj) { if(_socket != locSoc) return} //Catches if _socket changed while decoding so stop processing
-
-                //starts back the receviing on a background thread
+                //starts back the receving on a background thread
                 locSoc.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, On_Receive_Callback, locSoc);
             }
             catch (ObjectDisposedException) { } // closed from client
@@ -153,7 +159,11 @@ namespace Assignment1_Client
         {
             Socket s = (Socket)iasync.AsyncState;
             try { s.EndSend(iasync); }
-            catch (Exception) { Event_Server_Disconnected(s); }
+            catch (Exception) 
+            { 
+                Event_Server_Disconnected(s); 
+                s.Close();
+            }
         }
 
         private void Event_Server_Disconnected(Socket s)
@@ -162,6 +172,7 @@ namespace Assignment1_Client
             {
                 if (_socket != s) return; //Already handled by Disconnect or another callback
 
+                _socket.Close();
                 //Reset the socket
                 _socket = null;
             }

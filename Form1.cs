@@ -13,12 +13,7 @@ namespace Assignment1_Client
 {
     public partial class Form1 : Form
     {
-        #region required designer handlers
-        public Form1()
-        {
-            InitializeComponent();
-        }
-
+        #region UNUSED BUT REQUIRED
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -28,107 +23,102 @@ namespace Assignment1_Client
 
         }
         #endregion
+        //create object to access chat capeabilites
+        private readonly ChatClient _chatClient = new ChatClient();
+        public Form1()
+        {
+            InitializeComponent();
+            _chatClient.MessageReceived += Chat_MessageReceived;
+            _chatClient.ConnectionClosed += Chat_ConnectionClosed;
+            FormClosing += (s, e) => _chatClient.Disconnect();
+        }
 
-        //Class level variables (Any class can use them)
-        Socket _client = null;
-        string _ip = "127.0.0.1";
-        int _port = 0;
+        //Create function to manage writing to history on a background thread
+        private void AppendHistory(string message)
+        {
+            if (IsDisposed) { return; }
 
+
+            //Checks if whatever thread is calling needs to use an invoke or not depnding on it thread
+            if (InvokeRequired)
+            {
+                try { BeginInvoke(new Action(() => AppendHistory(message))); }
+                catch (ObjectDisposedException) { MessageBox.Show("NETWORK: Disconnected while appending"); }
+                catch (InvalidOperationException) { }
+            }
+            else
+            {
+                rtxtHistory.AppendText(message);
+                //Scrolls to appened txt
+                rtxtHistory.ScrollToCaret();
+            }
+        }
+
+        private void Chat_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            AppendHistory("Server: " + e.Message + "\n");
+        }
+
+        private void Chat_ConnectionClosed(object sender, ConnectionClosedEventArgs e)
+        {
+            AppendHistory(e.ServerDisconnected ? 
+                "NETWORK: Server Disconnected\n" :
+                "NETWORK: Disconnected\n");
+        }
         private void toolStripBtnConnect_Click(object sender, EventArgs e)
         {
-
-            _ip = toolStripTxtIP.Text;
-            int.TryParse(toolStripTxtPort.Text, out _port);
-
-            try
+            //Check if connect port is valid
+            if(!int.TryParse(toolStripTxtPort.Text, out int port))
             {
-                _client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                _client.Connect(_ip, _port);
-
-                MessageBox.Show("Connected");
-
-                StateObj _state = new StateObj();
-                _state.socket = _client;
-                _client.BeginReceive(_state.buffer, 0, StateObj.buffersize, SocketFlags.None, new AsyncCallback(receiveMessage), _state);
-            }
-            catch (Exception _e)
-            {
-                //MessageBox.Show(_e.ToString());
-                //MessageBox.Show(_e.Message);
-                MessageBox.Show("Invalid IP or Port, Try Again");
-                Console.WriteLine(_e.Message);
-                Console.WriteLine(_e.ToString());
-            }
-        }
-        private void receiveMessage(IAsyncResult iasync)
-        {
-            //Recasts "iasync" as StateObj
-            StateObj asyncMsgData = (StateObj)iasync.AsyncState;
-            Socket handler = asyncMsgData.socket;
-
-            try
-            {
-                //Num of bytes recived
-                int i = handler.EndReceive(iasync);
-
-                if (i == 0)
-                {
-                    // Server closed the connection
-                    this.Invoke(new MethodInvoker(delegate ()
-                    {
-                        rtxtHistory.AppendText("Server disconnected\n");
-                    }));
-                    handler.Close();
-                    return; // stop the receive loop
-                }
-
-                //RecivedMsg converted into a string
-                string receivedMsgString = Encoding.ASCII.GetString(asyncMsgData.buffer, 0, i);
-                
-                // Invoking method to display recived text to txtBox history
-                // Invoke is needed because it runs on a background thread
-                this.Invoke(new MethodInvoker(delegate ()
-                {
-                    this.rtxtHistory.AppendText("Server: " + receivedMsgString + "\n");
-                }));
-
-
-                _client.BeginReceive(asyncMsgData.buffer, 0, StateObj.buffersize, SocketFlags.None, new AsyncCallback(receiveMessage), asyncMsgData);
-            }
-            //For whenever the client dissconnects it sends a ObjectDisposedExpection from "int i = handler.EndReceive(iasync);"
-            //It is called because of the pending async callback
-            catch (ObjectDisposedException) 
-            {
-                MessageBox.Show("Client Disconnected");
-            }
-            catch (SocketException)
-            {
-                MessageBox.Show("Server Disconnected");
-            }
-            catch (Exception _e)
-            {
-                MessageBox.Show(_e.ToString());
-            }
-        }
-
-        private void btnSend_Click(object sender, EventArgs e)
-        {
-            //Makes sure you are connected befoer sending messages
-            if (_client == null || !_client.Connected)
-            {
-                MessageBox.Show("Not connected to a server");
+                MessageBox.Show("ERROR: Port must be a number");
                 return;
             }
 
-            string sendingMessage = txtMessage.Text;
-            _client.Send(Encoding.ASCII.GetBytes(sendingMessage + "\n"));
-
-            this.Invoke(new MethodInvoker(delegate ()
+            try
             {
-                //Resets Message box for nexttime
-                this.txtMessage.Text = "";
-                this.rtxtHistory.AppendText("Client: " + sendingMessage + "\n");
-            }));
+                _chatClient.Connect(toolStripTxtIP.Text, port);
+                AppendHistory("NETWORK: Connected\n");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR - Could Not connect. Reason:\n" + ex.Message);
+            }
+            
+        }
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            if (!_chatClient.IsConnected) 
+            {
+                MessageBox.Show("Not Connected to a server");
+                return;
+            }
+
+            string messsage = txtMessage.Text;
+            if (messsage.Length == 0) { return; }
+
+            try
+            {
+                _chatClient.Send(messsage);
+                AppendHistory("Client: " + messsage + "\n");
+
+                //Clears all text from text box
+                txtMessage.Clear();
+                txtMessage.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: Send failded: " + ex.Message);
+            }
+        }
+        private void toolStripBtnDisconnect_Click(object sender, EventArgs e)
+        {
+            if (!_chatClient.IsConnected)
+            {
+                MessageBox.Show("ERROR: Not Connected to a server");
+                return;
+            }
+
+            _chatClient.Disconnect();
         }
 
 
@@ -139,39 +129,5 @@ namespace Assignment1_Client
             toolStripTxtPort.Text = "13000";
         }
 
-        private void toolStripBtnDisconnect_Click(object sender, EventArgs e)
-        {
-            if (_client == null || !_client.Connected)
-            {
-                MessageBox.Show("Not connected");
-                return;
-            }
-
-            Socket toClose = _client;
-            _client = null; // set first so the receive callback knows this was intentional
-
-            try
-            {
-                // Sends a mesage to the server saying client is disconnecting
-                toClose.Shutdown(SocketShutdown.Both); 
-            }
-            catch (SocketException) 
-            {
-                MessageBox.Show("SocketException on shutdown");
-            } // already dead, ignore
-
-            
-            toClose.Close();
-
-            //MessageBox.Show("Client Disconnected");
-            rtxtHistory.AppendText("Disconnected\n");
-        }
-    }
-
-    public class StateObj
-    {
-        public Socket socket = null;
-        public const int buffersize = 1024;
-        public byte[] buffer = new byte[buffersize];
     }
 }
