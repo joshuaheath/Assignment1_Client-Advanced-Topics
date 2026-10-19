@@ -14,7 +14,6 @@ namespace Assignment1_Client
 {
     public partial class Form1 : Form
     {
-        #region
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -23,7 +22,6 @@ namespace Assignment1_Client
         {
 
         }
-        #endregion
         private readonly ChatClient _chatClient = new ChatClient();
         public Form1()
         {
